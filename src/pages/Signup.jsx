@@ -25,10 +25,10 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-		if (passwordText !== confirmPasswordText) {
-			setError("Passwords do not match.");
-			return;
-		}
+    if (passwordText !== confirmPasswordText) {
+      setError("Passwords do not match.");
+      return;
+    }
     createUserWithEmailAndPassword(auth, emailText, passwordText)
       .then((userCredential) => {
         const user = userCredential.user;

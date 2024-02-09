@@ -1,17 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 import { auth } from "../firebase";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import Button from "./Button";
+import AuthContext from "../context/AuthProvider";
 
 const AuthDetails = () => {
-  const [authUser, setAuthUser] = useState(null);
-
-  useEffect(() => {
-    const listen = onAuthStateChanged(auth, (user) => {
-      if (user) setAuthUser(user);
-      else setAuthUser(null);
-    });
-  }, []);
+  const { authUser, loading } = useContext(AuthContext);
 
   return (
     <div>

@@ -1,11 +1,16 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { auth } from "../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  setPersistence,
+  browserSessionPersistence,
+} from "firebase/auth";
 import Button from "../components/Button";
+import AuthContext from "../context/AuthProvider";
 
 const Signin = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -17,26 +22,48 @@ const Signin = () => {
 
   const navigate = useNavigate();
 
+  const { authUser, loading } = useContext(AuthContext);
+
   // empty the error when inputs change
   useEffect(() => {
     setError("");
   }, [emailText, passwordText]);
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    if (authUser) {
+      navigate("/details");
+    }
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    signInWithEmailAndPassword(auth, emailText, passwordText)
+    // setPersistence(auth, browserSessionPersistence)
+    //   .then(() => {
+    await signInWithEmailAndPassword(auth, emailText, passwordText)
       .then((userCredential) => {
         const user = userCredential.user;
+        // setAuthUser(user);
         console.log(user);
+        navigate("/details");
       })
       .catch((error) => {
         // const errorCode = error.code;
         // const errorMessage = error.message;
         // console.log(errorCode, errorMessage)
         console.log(error);
+        setError(error.message);
       });
+    // })
+    // .catch((error) => {
+    //   // Handle Errors here.
+    //   const errorCode = error.code;
+    //   const errorMessage = error.message;
+    // });
   };
-
+  if (loading) return <p>Loading...</p>;
+  if (authUser) {
+    navigate("/details");
+  }
   return (
     <main className="login-main">
       <h1 className="login-heading">Login</h1>
