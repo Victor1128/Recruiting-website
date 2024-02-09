@@ -9,7 +9,7 @@ const Button = ({
 }) => {
   const [disabled, setDisabled] = useState(false);
   const onClick = () => {
-    action();
+    action && action();
     if (disableAfterClick) setDisabled(true);
   };
   return (

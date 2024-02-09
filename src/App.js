@@ -11,6 +11,7 @@ import CreateProject from "./pages/User/CreateProject";
 import ViewPortfolio from "./pages/User/ViewPortfolio";
 import Forbidden from "./pages/Forbidden";
 import ViewPortfolios from "./pages/Recruiter/ViewPortfolios";
+import Messages from "./pages/User/Messages";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route element={<RequireAuth role={"user"} />}>
             <Route path="/portfolio" element={<ViewPortfolio />} />
             <Route path="/create" element={<CreateProject />} />
+            <Route path="/messages" element={<Messages />} />
           </Route>
           <Route element={<RequireAuth role={"recruiter"} />}>
             <Route path="/all-portfolios" element={<ViewPortfolios />} />

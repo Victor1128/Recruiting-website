@@ -24,9 +24,11 @@ const ViewPortfolios = () => {
         text: `Congratulations! You have been recruited by ${authUser.displayName}!`,
         receiverID: receiverID,
         senderId: authUser.uid,
+        senderName: authUser.displayName,
       });
     } catch (e) {
       console.log(e);
+      return <div>e</div>;
     }
   };
 

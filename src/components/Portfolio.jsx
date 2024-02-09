@@ -20,29 +20,30 @@ const Portfolio = ({ userId }) => {
           where("UserId", "==", userId)
         );
         console.log(querySnapshot);
-        const projectsData = querySnapshot.docs.map((document) =>
-          document.data().UserId == userId ? (
-            <>
-              <Project
-                key={document.id}
-                title={document.data().Title}
-                content={document.data().Content}
-              />
-              {authUser.uid === userId && (
-                <Button
-                  color="danger"
-                  action={async () => {
-                    await deleteDoc(
-                      doc(collection(db, "Projects"), document.id)
-                    );
-                    setRefresh(!refresh);
-                  }}
-                >
-                  Delete
-                </Button>
-              )}
-            </>
-          ) : null
+        const projectsData = querySnapshot.docs.map(
+          (document) =>
+            document.data().UserId == userId && (
+              <>
+                <Project
+                  key={document.id}
+                  title={document.data().Title}
+                  content={document.data().Content}
+                />
+                {authUser.uid === userId && (
+                  <Button
+                    color="danger"
+                    action={async () => {
+                      await deleteDoc(
+                        doc(collection(db, "Projects"), document.id)
+                      );
+                      setRefresh(!refresh);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                )}
+              </>
+            )
         );
         setProjects(projectsData);
       } catch (e) {
