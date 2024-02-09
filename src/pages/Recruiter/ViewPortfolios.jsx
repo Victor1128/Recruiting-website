@@ -9,11 +9,26 @@ import {
   deleteDoc,
   doc,
   orderBy,
+  addDoc,
 } from "firebase/firestore";
 import Project from "../../components/Project";
+import Button from "../../components/Button";
 
 const ViewPortfolios = () => {
   const [projects, setProjects] = useState([]);
+  const { authUser, loading } = useContext(AuthContext);
+
+  const sendMessage = async (receiverID) => {
+    try {
+      await addDoc(collection(db, "Messages"), {
+        text: `Congratulations! You have been recruited by ${authUser.displayName}!`,
+        receiverID: receiverID,
+        senderId: authUser.uid,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   useEffect(() => {
     const GetProjects = async () => {
@@ -31,7 +46,16 @@ const ViewPortfolios = () => {
           projectData.push(
             <>
               {lastId != document.data().UserId ? (
-                <div>{document.data().UserName}'s portfolio</div>
+                <>
+                  <h1>{document.data().UserName}'s portfolio</h1>
+                  <Button
+                    color="success"
+                    disableAfterClick={true}
+                    action={() => sendMessage(document.data().UserId)}
+                  >
+                    Recruit
+                  </Button>
+                </>
               ) : null}
               <Project
                 key={document.id}
