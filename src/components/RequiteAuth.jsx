@@ -10,7 +10,7 @@ const RequireAuth = ({ role = null }) => {
   if (loading) {
     return <p>Loading...</p>;
   }
-  return authUser && (role === null || authUser.displayName === role) ? (
+  return authUser && (role === null || authUser.photoURL === role) ? (
     <Outlet />
   ) : (
     <Navigate to="/forbidden" />

@@ -22,14 +22,16 @@ const ViewPortfolios = () => {
           collection(db, "Projects"),
           orderBy("UserId", "asc")
         );
+        const docs = querySnapshot.docs;
+        docs.sort((a, b) => (a.data().UserId > b.data().UserId ? 1 : -1));
         console.log(querySnapshot);
         const projectData = [];
         let lastId = "";
-        querySnapshot.docs.forEach((document) => {
+        docs.forEach((document) => {
           projectData.push(
             <>
               {lastId != document.data().UserId ? (
-                <div>asdfghjkmnbvcxazsxcdvbn</div>
+                <div>{document.data().UserName}'s portfolio</div>
               ) : null}
               <Project
                 key={document.id}

@@ -10,7 +10,7 @@ import Button from "../components/Button";
 const SignUp = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-
+  const [name, setName] = useState("");
   const [emailText, setEmailText] = useState("");
   const [passwordText, setPasswordText] = useState("");
   const [confirmPasswordText, setConfirmPasswordText] = useState("");
@@ -34,7 +34,9 @@ const SignUp = () => {
     createUserWithEmailAndPassword(auth, emailText, passwordText)
       .then((userCredential) => {
         updateProfile(userCredential.user, {
-          displayName: recruiter === "Yes" ? "recruiter" : "user",
+          // displayName: recruiter === "Yes" ? "recruiter" : "user",
+          photoURL: recruiter === "Yes" ? "recruiter" : "user",
+          displayName: name,
         });
         const user = userCredential.user;
         console.log(user);
@@ -63,6 +65,15 @@ const SignUp = () => {
           className="email-input"
           placeholder="Email"
           onChange={(e) => setEmailText(e.target.value)}
+          required
+        />
+        <br />
+        <input
+          type="text"
+          name="name"
+          className="name-input"
+          placeholder="Name"
+          onChange={(e) => setName(e.target.value)}
           required
         />
         <div className="password-input-div">

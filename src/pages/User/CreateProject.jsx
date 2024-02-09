@@ -26,6 +26,7 @@ const CreateProject = () => {
         Title: title,
         Content: content,
         UserId: authUser.uid,
+        UserName: authUser.displayName,
       });
       navigate("/portfolio");
     } catch (e) {
