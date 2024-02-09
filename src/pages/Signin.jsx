@@ -37,8 +37,6 @@ const Signin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // setPersistence(auth, browserSessionPersistence)
-    //   .then(() => {
     await signInWithEmailAndPassword(auth, emailText, passwordText)
       .then((userCredential) => {
         const user = userCredential.user;
@@ -47,18 +45,9 @@ const Signin = () => {
         navigate("/details");
       })
       .catch((error) => {
-        // const errorCode = error.code;
-        // const errorMessage = error.message;
-        // console.log(errorCode, errorMessage)
         console.log(error);
         setError(error.message);
       });
-    // })
-    // .catch((error) => {
-    //   // Handle Errors here.
-    //   const errorCode = error.code;
-    //   const errorMessage = error.message;
-    // });
   };
   if (loading) return <p>Loading...</p>;
   if (authUser) {

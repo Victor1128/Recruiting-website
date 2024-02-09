@@ -9,7 +9,7 @@ const RequireAuth = () => {
   console.log(authUser);
   if (loading) {
     return <p>Loading...</p>;
-  }
+  } 
   return authUser ? <Outlet /> : <Navigate to="/login" />;
   // return <Outlet />;
 };

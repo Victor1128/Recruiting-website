@@ -23,6 +23,4 @@ console.log(`App ID: ${process.env.REACT_APP_FIREBASE_APP_ID}`);
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-// auth.setPersistence(browserSessionPersistence);
-
 export const db = getFirestore(app);

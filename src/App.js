@@ -6,6 +6,9 @@ import Signup from "./pages/Signup";
 import AuthDetails from "./components/AuthDetails";
 import { AuthProvider } from "./context/AuthProvider";
 import RequireAuth from "./components/RequiteAuth";
+import Portfolio from "./components/Portfolio";
+import CreateProject from "./pages/User/CreateProject";
+import ViewPortfolio from "./pages/User/ViewPortfolio";
 
 function App() {
   return (
@@ -14,6 +17,8 @@ function App() {
         <Routes>
           <Route element={<RequireAuth />}>
             <Route path="/details" element={<AuthDetails />} />
+            <Route path="/portfolio" element={<ViewPortfolio />} />
+            <Route path="/create" element={<CreateProject />} />
           </Route>
           <Route index element={<Signin />} />
           <Route path="login" element={<Signin />} />

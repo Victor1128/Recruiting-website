@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../firebase";
+import Button from "../components/Button";
 
 const SignUp = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -13,6 +14,7 @@ const SignUp = () => {
   const [emailText, setEmailText] = useState("");
   const [passwordText, setPasswordText] = useState("");
   const [confirmPasswordText, setConfirmPasswordText] = useState("");
+  const [recruiter, setRecruiter] = useState("No");
 
   const [error, setError] = useState("");
   const [successful, setSuccessful] = useState(false);
@@ -31,6 +33,9 @@ const SignUp = () => {
     }
     createUserWithEmailAndPassword(auth, emailText, passwordText)
       .then((userCredential) => {
+        updateProfile(userCredential.user, {
+          displayName: recruiter === "Yes" ? "recruiter" : "user",
+        });
         const user = userCredential.user;
         console.log(user);
       })
@@ -38,6 +43,7 @@ const SignUp = () => {
         // const errorCode = error.code;
         // const errorMessage = error.message;
         // console.log(errorCode, errorMessage)
+        setError(error.message);
         console.log(error);
       });
   };
@@ -89,8 +95,30 @@ const SignUp = () => {
             icon={confirmPasswordVisible ? faEyeSlash : faEye}
           />
         </div>
-
-        <input type="submit" className="submit-input" value="Sign Up" />
+        <div id="wrapper">
+          <label for="yes_no_radio">Are you a recruiter?</label>
+          <p>
+            <label for="yes">Yes</label>
+            <input
+              type="radio"
+              name="yes"
+              value="Yes"
+              checked={recruiter === "Yes"}
+              onChange={(e) => setRecruiter(e.currentTarget.value)}
+            />
+          </p>
+          <p>
+            <label for="no">No</label>
+            <input
+              type="radio"
+              name="no"
+              value="No"
+              checked={recruiter === "No"}
+              onChange={(e) => setRecruiter(e.currentTarget.value)}
+            />
+          </p>
+        </div>
+        <Button type="submit">Sign Up</Button>
       </form>
 
       <div className="login-div">
