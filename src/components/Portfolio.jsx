@@ -1,12 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useAsync } from "react-async";
 import Project from "./Project";
 import { db } from "../firebase";
-import { getDocs, collection, where } from "firebase/firestore";
+import { getDocs, collection, where, deleteDoc, doc } from "firebase/firestore";
 import { useState } from "react";
+import Button from "./Button";
+import AuthContext from "../context/AuthProvider";
 
 const Portfolio = ({ userId }) => {
   const [projects, setProjects] = useState([]);
+  const { authUser, loading } = useContext(AuthContext);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const GetProjects = async () => {
@@ -16,13 +20,28 @@ const Portfolio = ({ userId }) => {
           where("UserId", "==", userId)
         );
         console.log(querySnapshot);
-        const projectsData = querySnapshot.docs.map((doc) =>
-          doc.data().UserId == userId ? (
-            <Project
-              key={doc.id}
-              title={doc.data().Title}
-              content={doc.data().Content}
-            />
+        const projectsData = querySnapshot.docs.map((document) =>
+          document.data().UserId == userId ? (
+            <>
+              <Project
+                key={document.id}
+                title={document.data().Title}
+                content={document.data().Content}
+              />
+              {authUser.uid === userId && (
+                <Button
+                  color="danger"
+                  action={async () => {
+                    await deleteDoc(
+                      doc(collection(db, "Projects"), document.id)
+                    );
+                    setRefresh(!refresh);
+                  }}
+                >
+                  Delete
+                </Button>
+              )}
+            </>
           ) : null
         );
         setProjects(projectsData);
@@ -34,7 +53,7 @@ const Portfolio = ({ userId }) => {
     };
 
     GetProjects();
-  }, [userId]);
+  }, [refresh]);
   return <div>{projects}</div>;
 };
 
