@@ -21,8 +21,7 @@ const Signin = () => {
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const userRole = useSelector((state) => state.auth.role);
-
-  const { authUser, loading } = useSelector((state) => state.auth);
+  
 
   // empty the error when inputs change
 
@@ -34,12 +33,7 @@ const Signin = () => {
     if (isAuthenticated) {
       navigate("/");
     }
-    if (authUser && !loading) {
-      navigate("/");
-    }
-  }, [isAuthenticated, authUser, loading]);
-
-  if (loading) return <p>Loading...</p>;
+  }, [isAuthenticated]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

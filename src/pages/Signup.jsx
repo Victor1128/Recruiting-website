@@ -42,7 +42,6 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSuccessful(false);
     if (passwordText !== confirmPasswordText) {
       setError("Passwords do not match.");
       return;
@@ -56,7 +55,11 @@ const SignUp = () => {
         });
         const user = userCredential.user;
         console.log(user);
+      })
+      .then(() => {
         setSuccessful(true);
+        window.location.reload();
+        navigate("/");
       })
       .catch((error) => {
         // const errorCode = error.code;
@@ -65,9 +68,6 @@ const SignUp = () => {
         setError(error.message);
         console.log(error);
       });
-    if (successful) {
-      navigate("/");
-    }
   };
 
   return (
