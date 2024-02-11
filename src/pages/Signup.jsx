@@ -66,9 +66,12 @@ const SignUp = () => {
   };
 
   return (
-    <main className="sign-up-main">
+    <main className="sign-up-main d-flex justify-content-center flex-column align-items-center">
       <h1 className="sign-up-heading">Sign Up</h1>
-      <form className="sign-up-form" onSubmit={handleSubmit}>
+      <form
+        className="sign-up-form d-flex w-25 p-2 justify-content-center flex-column align-items-center"
+        onSubmit={handleSubmit}
+      >
         {successful ? (
           <p className="success-div">Registration successful!</p>
         ) : (
@@ -77,7 +80,7 @@ const SignUp = () => {
         <input
           type="email"
           name="email"
-          className="email-input"
+          className="email-input form-control"
           placeholder="Email"
           onChange={(e) => setEmailText(e.target.value)}
           required
@@ -86,16 +89,18 @@ const SignUp = () => {
         <input
           type="text"
           name="name"
-          className="name-input"
+          className="name-input form-control"
           placeholder="Name"
           onChange={(e) => setName(e.target.value)}
           required
         />
-        <div className="password-input-div">
+        <br />
+
+        <div className="password-input-div d-flex justify-content-center  align-items-center w-100">
           <input
             type={!passwordVisible ? "password" : "text"}
             name="password"
-            className="password-input"
+            className="password-input form-control mx-2"
             placeholder="Password"
             onChange={(e) => setPasswordText(e.target.value)}
             required
@@ -106,11 +111,13 @@ const SignUp = () => {
             icon={passwordVisible ? faEyeSlash : faEye}
           />
         </div>
-        <div className="confirm-password-input-div">
+        <br />
+
+        <div className="confirm-password-input-div d-flex justify-content-center  align-items-center w-100">
           <input
             type={!confirmPasswordVisible ? "password" : "text"}
             name="confirm-password"
-            className="confirm-password-input"
+            className="confirm-password-input form-control mx-2"
             placeholder="Confirm Password"
             onChange={(e) => setConfirmPasswordText(e.target.value)}
             required
@@ -121,40 +128,49 @@ const SignUp = () => {
             icon={confirmPasswordVisible ? faEyeSlash : faEye}
           />
         </div>
-        <div id="wrapper">
+        <br />
+
+        <div id="wrapper" className="w-100">
           <label htmlFor="yes_no_radio">Are you a recruiter?</label>
-          <p>
-            <label htmlFor="yes">Yes</label>
+          <div className="form-check">
+            <label className="form-check-label" htmlFor="yes">
+              Yes
+            </label>
             <input
               type="radio"
               name="yes"
               value="Yes"
+              className="form-check-input"
               checked={recruiter === "Yes"}
               onChange={(e) => setRecruiter(e.currentTarget.value)}
             />
-          </p>
-          <p>
-            <label htmlFor="no">No</label>
+          </div>
+          <div className="form-check">
+            <label className="form-check-label" htmlFor="no">
+              No
+            </label>
             <input
+              className="form-check-input"
               type="radio"
               name="no"
               value="No"
               checked={recruiter === "No"}
               onChange={(e) => setRecruiter(e.currentTarget.value)}
             />
-          </p>
+          </div>
         </div>
         <Button type="submit">Sign Up</Button>
       </form>
-
-      <div className="login-div">
-        <p className="login-text">
-          Already have an account? Login{" "}
-          <Link className="login-link" to="/login">
-            here
-          </Link>
-        </p>
-      </div>
+      <br />
+      <br />
+      {/* <div className="login-div"> */}
+      <p className="login-text">
+        Already have an account? Login{" "}
+        <Link className="login-link" to="/login">
+          here
+        </Link>
+      </p>
+      {/* </div> */}
     </main>
   );
 };

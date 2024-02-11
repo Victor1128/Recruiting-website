@@ -9,7 +9,7 @@ const Signout = () => {
   const navigate = useNavigate();
   const { authUser, loading } = useContext(AuthContext);
   return (
-    <div>
+    <div className="d-flex justify-content-center flex-column align-items-center">
       {authUser ? (
         <>
           <Button

@@ -49,6 +49,7 @@ const ViewPortfolios = () => {
             <Portfolio userId={document}>
               <Button
                 color="success"
+                className="flex-end"
                 disableAfterClick={true}
                 action={async () => {
                   await sendMessage(document);

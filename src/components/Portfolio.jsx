@@ -25,24 +25,28 @@ const Portfolio = ({ userId, children }) => {
             (setUserName(document.data().UserName),
             (
               <>
-                <Project
-                  key={document.id}
-                  title={document.data().Title}
-                  content={document.data().Content}
-                />
-                {authUser.uid === userId && (
-                  <Button
-                    color="danger"
-                    action={async () => {
-                      await deleteDoc(
-                        doc(collection(db, "Projects"), document.id)
-                      );
-                      setRefresh(!refresh);
-                    }}
-                  >
-                    Delete
-                  </Button>
-                )}
+                <div className="container d-flex flex-row p-2 justify-content-between">
+                  <Project
+                    key={document.id}
+                    title={document.data().Title}
+                    content={document.data().Content}
+                  />
+                  {authUser.uid === userId && (
+                    <Button
+                      color="danger"
+                      className="flex-end"
+                      action={async () => {
+                        await deleteDoc(
+                          doc(collection(db, "Projects"), document.id)
+                        );
+                        setRefresh(!refresh);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  )}
+                </div>
+                <br />
               </>
             ))
         );
@@ -57,11 +61,13 @@ const Portfolio = ({ userId, children }) => {
     GetProjects();
   }, [refresh, authUser.uid, userId]);
   return (
-    <>
-      <h1>{userName}'s portfolio</h1>
-      {children}
-      <div>{projects}</div>
-    </>
+    <main className="d-flex justify-content-center flex-column align-items-center">
+      <div className="d-flex justify-content-between w-50">
+        <h1>{userName}'s portfolio</h1>
+        {children}
+      </div>
+      <div className="w-100">{projects}</div>
+    </main>
   );
 };
 

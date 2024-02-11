@@ -17,9 +17,13 @@ import NavBar from "./components/NavBar";
 import Index from "./pages/Index";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, updateProfile } from "firebase/auth";
 import { auth } from "./firebase";
-import { setIsAuthenticatedUser, setIsAuthenticatedRecruiter, logout } from "./context/authReducer";
+import {
+  setIsAuthenticatedUser,
+  setIsAuthenticatedRecruiter,
+  logout,
+} from "./context/authReducer";
 import { Provider } from "react-redux";
 import { Store } from "./context/Store";
 
@@ -39,8 +43,8 @@ function App() {
       if (user) {
         if (user.photoURL === "user") {
           dispatch(setIsAuthenticatedUser());
-        }
-        else if (user.photoURL === "recruiter") {
+        } else if (user.photoURL === "recruiter") {
+          // in photoUrl we are storing the role of the user
           dispatch(setIsAuthenticatedRecruiter());
         }
       } else {

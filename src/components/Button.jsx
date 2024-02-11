@@ -6,6 +6,7 @@ const Button = ({
   action,
   color = "primary",
   disableAfterClick = false,
+  className,
 }) => {
   const [disabled, setDisabled] = useState(false);
   const onClick = () => {
@@ -14,7 +15,11 @@ const Button = ({
   };
   return (
     !disabled && (
-      <button type={type} onClick={onClick} className={"btn btn-" + color}>
+      <button
+        type={type}
+        onClick={onClick}
+        className={"btn btn-" + color + " " + className}
+      >
         {children}
       </button>
     )
