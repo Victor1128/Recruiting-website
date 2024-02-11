@@ -11,7 +11,7 @@ const Portfolio = ({ userId }) => {
   const [projects, setProjects] = useState([]);
   const { authUser, loading } = useContext(AuthContext);
   const [refresh, setRefresh] = useState(false);
-
+  const [userName, setUserName] = useState("");
   useEffect(() => {
     const GetProjects = async () => {
       try {
@@ -22,7 +22,9 @@ const Portfolio = ({ userId }) => {
         console.log(querySnapshot);
         const projectsData = querySnapshot.docs.map(
           (document) =>
-            document.data().UserId == userId && (
+            document.data().UserId == userId &&
+            (setUserName(document.data().UserName),
+            (
               <>
                 <Project
                   key={document.id}
@@ -43,7 +45,7 @@ const Portfolio = ({ userId }) => {
                   </Button>
                 )}
               </>
-            )
+            ))
         );
         setProjects(projectsData);
       } catch (e) {
@@ -55,7 +57,12 @@ const Portfolio = ({ userId }) => {
 
     GetProjects();
   }, [refresh]);
-  return <div>{projects}</div>;
+  return (
+    <>
+      <h1>{userName}'s portfolio</h1>
+      <div>{projects}</div>
+    </>
+  );
 };
 
 export default Portfolio;

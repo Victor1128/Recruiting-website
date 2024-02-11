@@ -15,7 +15,7 @@ import Project from "../../components/Project";
 import Button from "../../components/Button";
 
 const ViewPortfolios = () => {
-  const [projects, setProjects] = useState([]);
+  const [portfolios, setPortfolios] = useState([]);
   const { authUser, loading } = useContext(AuthContext);
 
   const sendMessage = async (receiverID) => {
@@ -39,36 +39,18 @@ const ViewPortfolios = () => {
           collection(db, "Projects"),
           orderBy("UserId", "asc")
         );
-        const docs = querySnapshot.docs;
-        docs.sort((a, b) => (a.data().UserId > b.data().UserId ? 1 : -1));
-        console.log(querySnapshot);
-        const projectData = [];
-        let lastId = "";
-        docs.forEach((document) => {
-          projectData.push(
-            <>
-              {lastId != document.data().UserId ? (
-                <>
-                  <h1>{document.data().UserName}'s portfolio</h1>
-                  <Button
-                    color="success"
-                    disableAfterClick={true}
-                    action={() => sendMessage(document.data().UserId)}
-                  >
-                    Recruit
-                  </Button>
-                </>
-              ) : null}
-              <Project
-                key={document.id}
-                title={document.data().Title}
-                content={document.data().Content}
-              />
-            </>
-          );
-          lastId = document.data().UserId;
-        });
-        setProjects(projectData);
+        const docs = querySnapshot.docs.map((doc) => doc.data().UserId);
+        const unique = docs.filter(
+          (value, index, array) => array.indexOf(value) === index
+        );
+        console.log("unique ", unique);
+        const portfolios = unique.map((document) => (
+          <>
+            <Portfolio userId={document} />
+            <br /> <br />
+          </>
+        ));
+        setPortfolios(portfolios);
       } catch (e) {
         console.error(e);
 
@@ -79,7 +61,7 @@ const ViewPortfolios = () => {
     GetProjects();
   }, []);
 
-  return <div>{projects}</div>;
+  return <div>{portfolios}</div>;
 };
 
 export default ViewPortfolios;
