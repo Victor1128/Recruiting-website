@@ -1,11 +1,12 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../firebase";
 import Button from "../components/Button";
+import AuthContext from "../context/AuthProvider";
 
 const SignUp = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -18,12 +19,23 @@ const SignUp = () => {
 
   const [error, setError] = useState("");
   const [successful, setSuccessful] = useState(false);
+  const { authUser, loading } = useContext(AuthContext);
 
+  const navigate = useNavigate();
   // empty the error when inputs change
   useEffect(() => {
     setError("");
     setSuccessful(false);
   }, [passwordText, confirmPasswordText, emailText]);
+
+  useEffect(() => {
+    if (authUser && !loading) {
+      console.log("user", authUser);
+      navigate("/");
+    }
+  }, [authUser, loading]);
+
+  if (loading) return <p>Loading...</p>;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -107,9 +119,9 @@ const SignUp = () => {
           />
         </div>
         <div id="wrapper">
-          <label for="yes_no_radio">Are you a recruiter?</label>
+          <label htmlFor="yes_no_radio">Are you a recruiter?</label>
           <p>
-            <label for="yes">Yes</label>
+            <label htmlFor="yes">Yes</label>
             <input
               type="radio"
               name="yes"
@@ -119,7 +131,7 @@ const SignUp = () => {
             />
           </p>
           <p>
-            <label for="no">No</label>
+            <label htmlFor="no">No</label>
             <input
               type="radio"
               name="no"

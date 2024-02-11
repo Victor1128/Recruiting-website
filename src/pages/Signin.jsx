@@ -25,15 +25,19 @@ const Signin = () => {
   const { authUser, loading } = useContext(AuthContext);
 
   // empty the error when inputs change
+
   useEffect(() => {
     setError("");
   }, [emailText, passwordText]);
 
   useEffect(() => {
-    if (authUser) {
-      navigate("/details");
+    if (authUser && !loading) {
+      console.log("user", authUser);
+      navigate("/");
     }
-  }, []);
+  }, [authUser, loading]);
+
+  if (loading) return <p>Loading...</p>;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,17 +46,17 @@ const Signin = () => {
         const user = userCredential.user;
         // setAuthUser(user);
         console.log(user);
-        navigate("/details");
+        navigate("/");
       })
       .catch((error) => {
         console.log(error);
         setError(error.message);
       });
   };
-  if (loading) return <p>Loading...</p>;
-  if (authUser) {
-    navigate("/details");
-  }
+
+  // if (authUser && !loading) {
+  //   navigate("/");
+  // }
   return (
     <main className="login-main">
       <h1 className="login-heading">Login</h1>

@@ -7,7 +7,7 @@ import { useState } from "react";
 import Button from "./Button";
 import AuthContext from "../context/AuthProvider";
 
-const Portfolio = ({ userId }) => {
+const Portfolio = ({ userId, children }) => {
   const [projects, setProjects] = useState([]);
   const { authUser, loading } = useContext(AuthContext);
   const [refresh, setRefresh] = useState(false);
@@ -22,7 +22,7 @@ const Portfolio = ({ userId }) => {
         console.log(querySnapshot);
         const projectsData = querySnapshot.docs.map(
           (document) =>
-            document.data().UserId == userId &&
+            document.data().UserId === userId &&
             (setUserName(document.data().UserName),
             (
               <>
@@ -56,10 +56,11 @@ const Portfolio = ({ userId }) => {
     };
 
     GetProjects();
-  }, [refresh]);
+  }, [refresh, authUser.uid, userId]);
   return (
     <>
       <h1>{userName}'s portfolio</h1>
+      {children}
       <div>{projects}</div>
     </>
   );

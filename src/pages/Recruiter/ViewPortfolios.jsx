@@ -46,7 +46,17 @@ const ViewPortfolios = () => {
         console.log("unique ", unique);
         const portfolios = unique.map((document) => (
           <>
-            <Portfolio userId={document} />
+            <Portfolio userId={document}>
+              <Button
+                color="success"
+                disableAfterClick={true}
+                action={async () => {
+                  await sendMessage(document);
+                }}
+              >
+                Recruit
+              </Button>
+            </Portfolio>
             <br /> <br />
           </>
         ));
