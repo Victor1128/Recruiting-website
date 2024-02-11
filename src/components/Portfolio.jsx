@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from "react";
-import { useAsync } from "react-async";
 import Project from "./Project";
 import { db } from "../firebase";
 import { getDocs, collection, where, deleteDoc, doc } from "firebase/firestore";

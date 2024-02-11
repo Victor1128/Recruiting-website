@@ -1,25 +1,24 @@
-import React, { useContext, useEffect } from "react";
-import AuthContext from "../context/AuthProvider";
-import { auth } from "../firebase";
-import ViewPortfolio from "./User/ViewPortfolio";
-import ViewPortfolios from "./Recruiter/ViewPortfolios";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Index = () => {
-  const { authUser, loading } = useContext(AuthContext);
+  // const { authUser, loading } = useContext(AuthContext);
   const navigate = useNavigate();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const userRole = useSelector((state) => state.auth.role);
   useEffect(() => {
-    if (!loading) {
-      if (authUser) {
-        console.log("user", authUser);
-        authUser.photoURL === "user"
-          ? navigate("/portfolio")
-          : navigate("/all-portfolios");
-      } else navigate("/login");
-    }
-  }, [authUser, loading]);
+    // if (!loading) {
+    if (isAuthenticated) {
+      // console.log("user", authUser);
+      userRole === "user"
+        ? navigate("/portfolio")
+        : navigate("/all-portfolios");
+    } else navigate("/login");
+    // }
+  }, [isAuthenticated]);
 
-  if (loading) return <p>Loading...</p>;
+  // if (loading) return <p>Loading...</p>;
 
   return <></>;
 };

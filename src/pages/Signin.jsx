@@ -1,16 +1,15 @@
 import React from "react";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { auth } from "../firebase";
 import {
   signInWithEmailAndPassword,
-  setPersistence,
-  browserSessionPersistence,
 } from "firebase/auth";
 import Button from "../components/Button";
-import AuthContext from "../context/AuthProvider";
+
+import { useSelector } from "react-redux";
 
 const Signin = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -22,7 +21,9 @@ const Signin = () => {
 
   const navigate = useNavigate();
 
-  const { authUser, loading } = useContext(AuthContext);
+
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const userRole = useSelector((state) => state.auth.role);
 
   // empty the error when inputs change
 
@@ -31,20 +32,17 @@ const Signin = () => {
   }, [emailText, passwordText]);
 
   useEffect(() => {
-    if (authUser && !loading) {
-      console.log("user", authUser);
+    if (isAuthenticated) {
       navigate("/");
     }
-  }, [authUser, loading]);
+  }, [isAuthenticated]);
 
-  if (loading) return <p>Loading...</p>;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     await signInWithEmailAndPassword(auth, emailText, passwordText)
       .then((userCredential) => {
         const user = userCredential.user;
-        // setAuthUser(user);
         console.log(user);
         navigate("/");
       })
@@ -54,9 +52,6 @@ const Signin = () => {
       });
   };
 
-  // if (authUser && !loading) {
-  //   navigate("/");
-  // }
   return (
     <main className="login-main">
       <h1 className="login-heading">Login</h1>

@@ -7,6 +7,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../firebase";
 import Button from "../components/Button";
 import AuthContext from "../context/AuthProvider";
+import { useSelector } from "react-redux";
 
 const SignUp = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -19,7 +20,9 @@ const SignUp = () => {
 
   const [error, setError] = useState("");
   const [successful, setSuccessful] = useState(false);
-  const { authUser, loading } = useContext(AuthContext);
+  // const { authUser, loading } = useContext(AuthContext);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const userRole = useSelector((state) => state.auth.role);
 
   const navigate = useNavigate();
   // empty the error when inputs change
@@ -29,13 +32,13 @@ const SignUp = () => {
   }, [passwordText, confirmPasswordText, emailText]);
 
   useEffect(() => {
-    if (authUser && !loading) {
-      console.log("user", authUser);
+    if (isAuthenticated) {
+      // console.log("user", authUser);
       navigate("/");
     }
-  }, [authUser, loading]);
+  }, [isAuthenticated]);
 
-  if (loading) return <p>Loading...</p>;
+  // if (loading) return <p>Loading...</p>;
 
   const handleSubmit = (e) => {
     e.preventDefault();

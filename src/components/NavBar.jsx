@@ -2,14 +2,11 @@ import React from "react";
 import { useContext } from "react";
 import { Link, Navigate, Outlet } from "react-router-dom";
 
-import AuthContext from "../context/AuthProvider";
+import { useSelector } from "react-redux";
 
 const NavBar = () => {
-  const { authUser, loading } = useContext(AuthContext);
-  console.log(authUser);
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const userRole = useSelector((state) => state.auth.role);
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="collapse navbar-collapse" id="navbarNav">
@@ -19,14 +16,14 @@ const NavBar = () => {
               Home
             </Link>
           </li>
-          {authUser && authUser.photoURL === "recruiter" && (
+          {isAuthenticated && userRole === "recruiter" && (
             <li className="nav-item">
               <Link to="/all-portfolios" className="nav-link">
                 Portfolios
               </Link>
             </li>
           )}
-          {authUser && authUser.photoURL === "user" && (
+          {isAuthenticated && userRole === "user" && (
             <>
               <li className="nav-item">
                 <Link to="/portfolio" className="nav-link">
@@ -45,21 +42,21 @@ const NavBar = () => {
               </li>
             </>
           )}
-          {authUser && (
+          {isAuthenticated && (
             <li className="nav-item">
               <Link to="/signout" className="nav-link">
                 Logout
               </Link>
             </li>
           )}
-          {!authUser && (
+          {!isAuthenticated && (
             <li className="nav-item">
               <Link to="/login" className="nav-link">
                 Login
               </Link>
             </li>
           )}
-          {!authUser && (
+          {!isAuthenticated && (
             <li className="nav-item">
               <Link to="/sign-up" className="nav-link">
                 Register
