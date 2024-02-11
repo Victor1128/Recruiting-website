@@ -12,6 +12,7 @@ const Portfolio = ({ userId, children }) => {
   const [refresh, setRefresh] = useState(false);
   const [userName, setUserName] = useState("");
   useEffect(() => {
+    setUserName(authUser.displayName);
     const GetProjects = async () => {
       try {
         const querySnapshot = await getDocs(
