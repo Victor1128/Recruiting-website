@@ -1,10 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { db } from "../../firebase";
-import {
-  getDocs,
-  collection,
-  where,
-} from "firebase/firestore";
+import { getDocs, collection, where } from "firebase/firestore";
 import AuthContext from "../../context/AuthProvider";
 
 const Messages = () => {
@@ -42,7 +38,7 @@ const Messages = () => {
     getMessages();
   }, []);
 
-  return <div>{messages}</div>;
+  return <div className="m-5">{messages}</div>;
 };
 
 export default Messages;

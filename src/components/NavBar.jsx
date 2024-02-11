@@ -37,7 +37,7 @@ const NavBar = () => {
               </li>
               <li className="nav-item">
                 <Link to="/messages" className="nav-link">
-                  Messages
+                  Notifications
                 </Link>
               </li>
             </>
